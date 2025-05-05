@@ -15,7 +15,7 @@
     #map {
       position: absolute;
       top: 0;
-      left: 300px;
+      left: 300px; /* Sidebar width */
       right: 0;
       bottom: 0;
       z-index: 0;
@@ -31,9 +31,12 @@
       padding: 10px;
       z-index: 1000;
       box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+      box-sizing: border-box; /* Include padding in width */
     }
     h3 {
       margin-top: 0.5em;
+      margin-bottom: 0.5em; /* Added for spacing */
+      padding-left: 5px; /* Align with details */
     }
     details {
       margin-left: 0;
@@ -48,9 +51,16 @@
     summary {
       cursor: pointer;
       font-weight: bold;
+      padding: 2px 0; /* Added for better click area */
     }
     ul {
       padding-left: 1em;
+      list-style-type: disc; /* Ensure bullets are visible */
+      margin-top: 5px; /* Space between summary and list */
+      margin-bottom: 5px;
+    }
+    li {
+       margin-bottom: 3px; /* Space between list items */
     }
     a {
       color: #0077cc;
@@ -58,6 +68,12 @@
     }
     a:hover {
       text-decoration: underline;
+    }
+    hr {
+        border: 0;
+        height: 1px;
+        background: #ccc;
+        margin: 1em 0;
     }
   </style>
 </head>
@@ -73,84 +89,100 @@
 
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script>
-    L.Icon.Default.mergeOptions({
-      iconUrl: 'marker-icon.png',
-      iconRetinaUrl: 'marker-icon-2x.png',
-      shadowUrl: 'marker-shadow.png'
-    });
+    // Set default icon paths (make sure these files exist or remove if using default CDN icons)
+    // L.Icon.Default.mergeOptions({
+    //   iconUrl: 'marker-icon.png',
+    //   iconRetinaUrl: 'marker-icon-2x.png',
+    //   shadowUrl: 'marker-shadow.png'
+    // });
 
     const map = L.map('map', {
-      zoomControl: false
-    }).setView([30, 0], 2);
+      zoomControl: false // Disable default zoom control
+    }).setView([30, 0], 2); // Initial view: center of the world, zoomed out
+
+    // Add zoom control to the top right
     L.control.zoom({ position: 'topright' }).addTo(map);
 
+    // Add OpenStreetMap tile layer
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '地圖資料 © OpenStreetMap 貢獻者',
+      attribution: '地圖資料 © <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> 貢獻者',
       maxZoom: 18,
     }).addTo(map);
 
+    // Fetch and process the hierarchical location data
     fetch('data.json')
       .then(response => response.json())
       .then(data => {
         const menu = document.getElementById('menu');
-        const grouped = {};
 
-        data.forEach(entry => {
-          const { continent, country, school } = entry;
-          if (!grouped[continent]) grouped[continent] = {};
-          if (!grouped[continent][country]) grouped[continent][country] = {};
-          grouped[continent][country][school] = entry;
+        // Iterate through continents
+        for (const continentName in data) {
+          const continentData = data[continentName];
+          const continentElement = document.createElement('details');
+          const continentSummary = document.createElement('summary');
+          continentSummary.textContent = continentName;
+          continentElement.appendChild(continentSummary);
 
-          const popupContent = `<strong>${school}</strong><br><ul>` +
-            entry.articles.map(a => `<li><a href="${a.url}" target="_blank">${a.title}</a></li>`).join('') +
-            '</ul>';
-          L.marker([entry.lat, entry.lon]).addTo(map).bindPopup(popupContent);
-        });
+          // Iterate through countries in the continent
+          for (const countryName in continentData) {
+            const countryData = continentData[countryName];
+            const countryElement = document.createElement('details');
+            const countrySummary = document.createElement('summary');
+            countrySummary.textContent = countryName;
+            countryElement.appendChild(countrySummary);
 
-        for (let cont in grouped) {
-          const contEl = document.createElement('details');
-          const contSum = document.createElement('summary');
-          contSum.textContent = cont;
-          contEl.appendChild(contSum);
+            // Iterate through schools in the country
+            for (const schoolName in countryData) {
+              const schoolData = countryData[schoolName];
+              const schoolElement = document.createElement('details');
+              const schoolSummary = document.createElement('summary');
+              schoolSummary.textContent = schoolName;
+              schoolElement.appendChild(schoolSummary);
 
-          for (let country in grouped[cont]) {
-            const countryEl = document.createElement('details');
-            const countrySum = document.createElement('summary');
-            countrySum.textContent = country;
-            countryEl.appendChild(countrySum);
-
-            for (let school in grouped[cont][country]) {
-              const schoolEl = document.createElement('details');
-              const schoolSum = document.createElement('summary');
-              schoolSum.textContent = school;
-              schoolEl.appendChild(schoolSum);
-
-              const ul = document.createElement('ul');
-              grouped[cont][country][school].articles.forEach(article => {
-                const li = document.createElement('li');
-                li.innerHTML = `<a href="${article.url}" target="_blank">${article.title}</a>`;
-                ul.appendChild(li);
+              // Create list of articles for the school
+              const articleList = document.createElement('ul');
+              schoolData.articles.forEach(article => {
+                const listItem = document.createElement('li');
+                listItem.innerHTML = `<a href="${article.url}" target="_blank">${article.title}</a>`;
+                articleList.appendChild(listItem);
               });
+              schoolElement.appendChild(articleList);
 
-              schoolEl.appendChild(ul);
-              countryEl.appendChild(schoolEl);
+              // Add marker to the map for the school
+              if (schoolData.lat != null && schoolData.lon != null) {
+                  const popupContent = `<strong>${schoolName}</strong><br><ul>` +
+                    schoolData.articles.map(a => `<li><a href="${a.url}" target="_blank">${a.title}</a></li>`).join('') +
+                    '</ul>';
+                  L.marker([schoolData.lat, schoolData.lon])
+                   .addTo(map)
+                   .bindPopup(popupContent);
+              } else {
+                  console.warn(`Missing coordinates for ${schoolName}`);
+              }
+
+
+              countryElement.appendChild(schoolElement);
             }
-            contEl.appendChild(countryEl);
+            continentElement.appendChild(countryElement);
           }
-          menu.appendChild(contEl);
+          menu.appendChild(continentElement);
         }
-      });
+      })
+      .catch(error => console.error('Error loading location data:', error));
 
+    // Fetch and process the separate events data
     fetch('events.json')
       .then(response => response.json())
       .then(data => {
-        const events = document.getElementById('events');
+        const eventsList = document.getElementById('events');
         data.forEach(article => {
-          const li = document.createElement('li');
-          li.innerHTML = `<a href="${article.url}" target="_blank">${article.title}</a>`;
-          events.appendChild(li);
+          const listItem = document.createElement('li');
+          listItem.innerHTML = `<a href="${article.url}" target="_blank">${article.title}</a>`;
+          eventsList.appendChild(listItem);
         });
-      });
+      })
+      .catch(error => console.error('Error loading events data:', error));
+
   </script>
 </body>
 </html>
