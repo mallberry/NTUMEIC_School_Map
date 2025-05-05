@@ -13,8 +13,12 @@
       font-family: sans-serif;
     }
     #map {
-      width: 100%;
-      height: 100%;
+      position: absolute;
+      top: 0;
+      left: 300px;
+      right: 0;
+      bottom: 0;
+      z-index: 0;
     }
     #sidebar {
       position: absolute;
@@ -28,12 +32,25 @@
       z-index: 1000;
       box-shadow: 2px 0 5px rgba(0,0,0,0.1);
     }
+    h3 {
+      margin-top: 0.5em;
+    }
     details {
+      margin-left: 0;
       margin-bottom: 5px;
+    }
+    details details {
+      margin-left: 1em;
+    }
+    details details details {
+      margin-left: 2em;
     }
     summary {
       cursor: pointer;
       font-weight: bold;
+    }
+    ul {
+      padding-left: 1em;
     }
     a {
       color: #0077cc;
@@ -46,7 +63,7 @@
 </head>
 <body>
   <div id="sidebar">
-    <h3>留學地點瀏覽</h3>
+    <h3>📍地點瀏覽</h3>
     <div id="menu"></div>
     <hr>
     <h3>分享會文章</h3>
@@ -62,7 +79,11 @@
       shadowUrl: 'marker-shadow.png'
     });
 
-    const map = L.map('map').setView([30, 0], 2);
+    const map = L.map('map', {
+      zoomControl: false
+    }).setView([30, 0], 2);
+    L.control.zoom({ position: 'topright' }).addTo(map);
+
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '地圖資料 © OpenStreetMap 貢獻者',
       maxZoom: 18,
@@ -79,31 +100,38 @@
           if (!grouped[continent]) grouped[continent] = {};
           if (!grouped[continent][country]) grouped[continent][country] = {};
           grouped[continent][country][school] = entry;
-          
-          // 地圖標記
+
           const popupContent = `<strong>${school}</strong><br><ul>` +
             entry.articles.map(a => `<li><a href="${a.url}" target="_blank">${a.title}</a></li>`).join('') +
             '</ul>';
           L.marker([entry.lat, entry.lon]).addTo(map).bindPopup(popupContent);
         });
 
-        // 建立選單
         for (let cont in grouped) {
           const contEl = document.createElement('details');
-          contEl.innerHTML = `<summary>${cont}</summary>`;
+          const contSum = document.createElement('summary');
+          contSum.textContent = cont;
+          contEl.appendChild(contSum);
+
           for (let country in grouped[cont]) {
             const countryEl = document.createElement('details');
-            countryEl.innerHTML = `<summary>${country}</summary>`;
+            const countrySum = document.createElement('summary');
+            countrySum.textContent = country;
+            countryEl.appendChild(countrySum);
+
             for (let school in grouped[cont][country]) {
-              const entry = grouped[cont][country][school];
               const schoolEl = document.createElement('details');
-              schoolEl.innerHTML = `<summary>${school}</summary>`;
+              const schoolSum = document.createElement('summary');
+              schoolSum.textContent = school;
+              schoolEl.appendChild(schoolSum);
+
               const ul = document.createElement('ul');
-              entry.articles.forEach(article => {
+              grouped[cont][country][school].articles.forEach(article => {
                 const li = document.createElement('li');
                 li.innerHTML = `<a href="${article.url}" target="_blank">${article.title}</a>`;
                 ul.appendChild(li);
               });
+
               schoolEl.appendChild(ul);
               countryEl.appendChild(schoolEl);
             }
@@ -113,7 +141,6 @@
         }
       });
 
-    // 額外載入分享會文章
     fetch('events.json')
       .then(response => response.json())
       .then(data => {
