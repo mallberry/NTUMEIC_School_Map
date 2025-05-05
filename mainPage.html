@@ -1,188 +1,213 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="utf-8" />
-  <title>台大機械留學地圖</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-  <style>
-    html, body {
-      margin: 0;
-      padding: 0;
-      height: 100%;
-      font-family: sans-serif;
-    }
-    #map {
-      position: absolute;
-      top: 0;
-      left: 300px; /* Sidebar width */
-      right: 0;
-      bottom: 0;
-      z-index: 0;
-    }
-    #sidebar {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 300px;
-      height: 100%;
-      background: rgba(255, 255, 255, 0.95);
-      overflow-y: auto;
-      padding: 10px;
-      z-index: 1000;
-      box-shadow: 2px 0 5px rgba(0,0,0,0.1);
-      box-sizing: border-box; /* Include padding in width */
-    }
-    h3 {
-      margin-top: 0.5em;
-      margin-bottom: 0.5em; /* Added for spacing */
-      padding-left: 5px; /* Align with details */
-    }
-    details {
-      margin-left: 0;
-      margin-bottom: 5px;
-    }
-    details details {
-      margin-left: 1em;
-    }
-    details details details {
-      margin-left: 2em;
-    }
-    summary {
-      cursor: pointer;
-      font-weight: bold;
-      padding: 2px 0; /* Added for better click area */
-    }
-    ul {
-      padding-left: 1em;
-      list-style-type: disc; /* Ensure bullets are visible */
-      margin-top: 5px; /* Space between summary and list */
-      margin-bottom: 5px;
-    }
-    li {
-       margin-bottom: 3px; /* Space between list items */
-    }
-    a {
-      color: #0077cc;
-      text-decoration: none;
-    }
-    a:hover {
-      text-decoration: underline;
-    }
-    hr {
-        border: 0;
-        height: 1px;
-        background: #ccc;
-        margin: 1em 0;
-    }
-  </style>
+    <meta charset="utf-8" />
+    <title>台大機械留學地圖</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            font-family: sans-serif;
+        }
+        #map {
+            position: absolute;
+            top: 0;
+            left: 0; /* Initially covers the whole width */
+            right: 0;
+            bottom: 0;
+            z-index: 0;
+            transition: left 0.3s ease-in-out; /* Smooth transition for map movement */
+        }
+        #sidebar {
+            position: fixed; /* Fixed to the viewport */
+            top: 0;
+            left: -300px; /* Initially hidden to the left */
+            width: 300px;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            overflow-y: auto;
+            padding: 10px;
+            z-index: 1000;
+            box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+            box-sizing: border-box; /* Include padding in width */
+            transition: left 0.3s ease-in-out; /* Smooth transition for sidebar */
+        }
+        #sidebar.open {
+            left: 0; /* Slide in when open class is added */
+        }
+        .menu-toggle {
+            position: fixed;
+            top: 15px;
+            left: 15px;
+            z-index: 1001;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            width: 30px;
+            height: 22px;
+            cursor: pointer;
+            padding: 5px;
+            background-color: rgba(255, 255, 255, 0.8);
+            border-radius: 5px;
+            box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+        }
+        .menu-toggle span {
+            display: block;
+            height: 3px;
+            width: 100%;
+            background-color: #333;
+            border-radius: 3px;
+        }
+        h3 {
+            margin-top: 0.5em;
+            margin-bottom: 0.5em; /* Added for spacing */
+            padding-left: 5px; /* Align with details */
+        }
+        details {
+            margin-left: 0;
+            margin-bottom: 5px;
+        }
+        details details {
+            margin-left: 1em;
+        }
+        details details details {
+            margin-left: 2em;
+        }
+        summary {
+            cursor: pointer;
+            font-weight: bold;
+            padding: 2px 0; /* Added for better click area */
+        }
+        ul {
+            padding-left: 1em;
+            list-style-type: disc; /* Ensure bullets are visible */
+            margin-top: 5px; /* Space between summary and list */
+            margin-bottom: 5px;
+        }
+        li {
+            margin-bottom: 3px; /* Space between list items */
+        }
+        a {
+            color: #0077cc;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        hr {
+            border: 0;
+            height: 1px;
+            background: #ccc;
+            margin: 1em 0;
+        }
+    </style>
 </head>
 <body>
-  <div id="sidebar">
-    <h3>📍地點瀏覽</h3>
-    <div id="menu"></div>
-    <hr>
-    <h3>分享會文章</h3>
-    <ul id="events"></ul>
-  </div>
-  <div id="map"></div>
+    <div class="menu-toggle">
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
+    <div id="sidebar">
+        <h3>📍地點瀏覽</h3>
+        <div id="menu"></div>
+        <hr>
+        <h3>分享會文章</h3>
+        <ul id="events"></ul>
+    </div>
+    <div id="map"></div>
 
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-  <script>
-    // Set default icon paths (make sure these files exist or remove if using default CDN icons)
-    // L.Icon.Default.mergeOptions({
-    //   iconUrl: 'marker-icon.png',
-    //   iconRetinaUrl: 'marker-icon-2x.png',
-    //   shadowUrl: 'marker-shadow.png'
-    // });
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script>
+        const map = L.map('map', {
+            zoomControl: false
+        }).setView([30, 0], 2);
 
-    const map = L.map('map', {
-      zoomControl: false // Disable default zoom control
-    }).setView([30, 0], 2); // Initial view: center of the world, zoomed out
+        L.control.zoom({ position: 'topright' }).addTo(map);
 
-    // Add zoom control to the top right
-    L.control.zoom({ position: 'topright' }).addTo(map);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '地圖資料 © <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> 貢獻者',
+            maxZoom: 18,
+        }).addTo(map);
 
-    // Add OpenStreetMap tile layer
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '地圖資料 © <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> 貢獻者',
-      maxZoom: 18,
-    }).addTo(map);
+        const sidebar = document.getElementById('sidebar');
+        const mapElement = document.getElementById('map');
+        const menuToggle = document.querySelector('.menu-toggle');
 
-    // Fetch and process the hierarchical location data
-    fetch('data.json')
-      .then(response => response.json())
-      .then(data => {
-        const menu = document.getElementById('menu');
-
-        // Iterate through continents
-        for (const continentName in data) {
-          const continentData = data[continentName];
-          const continentElement = document.createElement('details');
-          const continentSummary = document.createElement('summary');
-          continentSummary.textContent = continentName;
-          continentElement.appendChild(continentSummary);
-
-          // Iterate through countries in the continent
-          for (const countryName in continentData) {
-            const countryData = continentData[countryName];
-            const countryElement = document.createElement('details');
-            const countrySummary = document.createElement('summary');
-            countrySummary.textContent = countryName;
-            countryElement.appendChild(countrySummary);
-
-            // Iterate through schools in the country
-            for (const schoolName in countryData) {
-              const schoolData = countryData[schoolName];
-              const schoolElement = document.createElement('details');
-              const schoolSummary = document.createElement('summary');
-              schoolSummary.textContent = schoolName;
-              schoolElement.appendChild(schoolSummary);
-
-              // Create list of articles for the school
-              const articleList = document.createElement('ul');
-              schoolData.articles.forEach(article => {
-                const listItem = document.createElement('li');
-                listItem.innerHTML = `<a href="${article.url}" target="_blank">${article.title}</a>`;
-                articleList.appendChild(listItem);
-              });
-              schoolElement.appendChild(articleList);
-
-              // Add marker to the map for the school
-              if (schoolData.lat != null && schoolData.lon != null) {
-                  const popupContent = `<strong>${schoolName}</strong><br><ul>` +
-                    schoolData.articles.map(a => `<li><a href="${a.url}" target="_blank">${a.title}</a></li>`).join('') +
-                    '</ul>';
-                  L.marker([schoolData.lat, schoolData.lon])
-                   .addTo(map)
-                   .bindPopup(popupContent);
-              } else {
-                  console.warn(`Missing coordinates for ${schoolName}`);
-              }
-
-
-              countryElement.appendChild(schoolElement);
-            }
-            continentElement.appendChild(countryElement);
-          }
-          menu.appendChild(continentElement);
-        }
-      })
-      .catch(error => console.error('Error loading location data:', error));
-
-    // Fetch and process the separate events data
-    fetch('events.json')
-      .then(response => response.json())
-      .then(data => {
-        const eventsList = document.getElementById('events');
-        data.forEach(article => {
-          const listItem = document.createElement('li');
-          listItem.innerHTML = `<a href="${article.url}" target="_blank">${article.title}</a>`;
-          eventsList.appendChild(listItem);
+        menuToggle.addEventListener('click', () => {
+            sidebar.classList.toggle('open');
+            mapElement.classList.toggle('open-sidebar'); // Optional: Adjust map position
         });
-      })
-      .catch(error => console.error('Error loading events data:', error));
 
-  </script>
+        fetch('data.json')
+            .then(response => response.json())
+            .then(data => {
+                const menu = document.getElementById('menu');
+
+                for (const continentName in data) {
+                    const continentData = data[continentName];
+                    const continentElement = document.createElement('details');
+                    const continentSummary = document.createElement('summary');
+                    continentSummary.textContent = continentName;
+                    continentElement.appendChild(continentSummary);
+
+                    for (const countryName in continentData) {
+                        const countryData = continentData[countryName];
+                        const countryElement = document.createElement('details');
+                        const countrySummary = document.createElement('summary');
+                        countrySummary.textContent = countryName;
+                        countryElement.appendChild(countrySummary);
+
+                        for (const schoolName in countryData) {
+                            const schoolData = countryData[schoolName];
+                            const schoolElement = document.createElement('details');
+                            const schoolSummary = document.createElement('summary');
+                            schoolSummary.textContent = schoolName;
+                            schoolElement.appendChild(schoolSummary);
+
+                            const articleList = document.createElement('ul');
+                            schoolData.articles.forEach(article => {
+                                const listItem = document.createElement('li');
+                                listItem.innerHTML = `<a href="${article.url}" target="_blank">${article.title}</a>`;
+                                articleList.appendChild(listItem);
+                            });
+                            schoolElement.appendChild(articleList);
+
+                            if (schoolData.lat != null && schoolData.lon != null) {
+                                const popupContent = `<strong>${schoolName}</strong><br><ul>` +
+                                    schoolData.articles.map(a => `<li><a href="${a.url}" target="_blank">${a.title}</a></li>`).join('') +
+                                    '</ul>';
+                                L.marker([schoolData.lat, schoolData.lon])
+                                    .addTo(map)
+                                    .bindPopup(popupContent);
+                            } else {
+                                console.warn(`Missing coordinates for ${schoolName}`);
+                            }
+
+                            countryElement.appendChild(schoolElement);
+                        }
+                        continentElement.appendChild(countryElement);
+                    }
+                    menu.appendChild(continentElement);
+                }
+            })
+            .catch(error => console.error('Error loading location data:', error));
+
+        fetch('events.json')
+            .then(response => response.json())
+            .then(data => {
+                const eventsList = document.getElementById('events');
+                data.forEach(article => {
+                    const listItem = document.createElement('li');
+                    listItem.innerHTML = `<a href="${article.url}" target="_blank">${article.title}</a>`;
+                    eventsList.appendChild(listItem);
+                });
+            })
+            .catch(error => console.error('Error loading events data:', error));
+
+    </script>
 </body>
 </html>
