@@ -1,32 +1,44 @@
-[
-  {
-    "continent": "歐洲",
-    "country": "荷蘭",
-    "school": "Delft University of Technology (TU Delft)",
-    "lat": 52.002,
-    "lon": 4.373,
-    "articles": [
-      {
-        "title": "B05級 顏秉鈞學長 - MSc Aerospace Engineering",
-        "url": "https://medium.com/@ntumeinternationalcompass/b05%E7%B4%9A-%E9%A1%8F%E7%A7%89%E5%9D%87-delft-university-of-technology-msc-aerospace-engineering-f6b341130057"
-      },
-      {
-        "title": "B08級 張育軒學姐 - MSc Sustainable Energy Technology Programme",
-        "url": "https://medium.com/@ntumeinternationalcompass/b08%E7%B4%9A-%E5%BC%B5%E8%82%B2%E8%BB%92-tu-delft-msc-sustainable-energy-technology-programme-0c6fc741db2e"
+{
+  "歐洲": {
+    "荷蘭": {
+      "Delft University of Technology (TU Delft)": {
+        "lat": 52.002,
+        "lon": 4.373,
+        "articles": [
+          {
+            "title": "B05級 顏秉鈞學長 - MSc Aerospace Engineering",
+            "url": "https://medium.com/@ntumeinternationalcompass/b05%E7%B4%9A-%E9%A1%8F%E7%A7%89%E5%9D%87-delft-university-of-technology-msc-aerospace-engineering-f6b341130057"
+          },
+          {
+            "title": "B08級 張育軒學姐 - MSc Sustainable Energy Technology Programme",
+            "url": "https://medium.com/@ntumeinternationalcompass/b08%E7%B4%9A-%E5%BC%B5%E8%82%B2%E8%BB%92-tu-delft-msc-sustainable-energy-technology-programme-0c6fc741db2e"
+          }
+        ]
       }
-    ]
+      // 如果荷蘭有其他大學，可以在這裡繼續添加
+      // "Another Dutch University": { ... }
+    }
+    // 如果歐洲有其他國家，可以在這裡繼續添加
+    // "德國": { ... }
   },
-  {
-    "continent": "北美洲",
-    "country": "美國",
-    "school": "Purdue University",
-    "lat": 40.412,
-    "lon": -86.937,
-    "articles": [
-      {
-        "title": "B06級 黃尹謙學長 - Electrical and Computer Engineering M.S. & Aeronautics and Astronautics Ph.D.",
-        "url": "https://medium.com/@ntumeinternationalcompass/b06%E7%B4%9A-%E9%BB%83%E5%B0%B9%E8%AC%99purdue-electrical-and-computer-engineering-m-s-aeronautics-and-astronautics-ph-d-cfefb3d3853b"
+  "北美洲": {
+    "美國": {
+      "Purdue University": {
+        "lat": 40.412,
+        "lon": -86.937,
+        "articles": [
+          {
+            "title": "B06級 黃尹謙學長 - Electrical and Computer Engineering M.S. & Aeronautics and Astronautics Ph.D.",
+            "url": "https://medium.com/@ntumeinternationalcompass/b06%E7%B4%9A-%E9%BB%83%E5%B0%B9%E8%AC%99purdue-electrical-and-computer-engineering-m-s-aeronautics-and-astronautics-ph-d-cfefb3d3853b"
+          }
+        ]
       }
-    ]
+      // 如果美國有其他大學，可以在這裡繼續添加
+      // "Stanford University": { ... }
+    }
+    // 如果北美洲有其他國家，可以在這裡繼續添加
+    // "加拿大": { ... }
   }
-]
+  // 可以繼續添加其他洲
+  // "亞洲": { ... }
+}
