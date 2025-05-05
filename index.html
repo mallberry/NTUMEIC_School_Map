@@ -4,10 +4,7 @@
   <meta charset="utf-8" />
   <title>台大機械留學地圖</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link
-    rel="stylesheet"
-    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-  />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <style>
     html, body {
       margin: 0;
@@ -25,15 +22,11 @@
 
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script>
-    // 使用 Base64 內嵌圖示
-    const iconUrl = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABkAAAAdCAYAAACt1GHVAAAACXBIWXMAAAsTAAALEwEAmpwYAAAB9ElEQVR4nO2VvW7DMAxG+QdLEgHoAhJQASVAASVACUgAakAESaACUoAHaAApSgABJED8yF8u3U2PizY7cZzLGHzzXlZbiLZmK3zVNghcBp0HmDi/gGmAnWBPeKZ3OVgkbgCb6VNDsAmuZTfomRtVoNLbM+b7f+6XgmM/7GdscbUB4kvgBN5Uy3Gmcc7lYf3qMIMl8zXrgtAn1/AqF8IjTTZAp6VpEyksvkiQqbq/fFCSDNPK7/ozu8/YbLfRQqGATbTTMN3LHDtOaBg6wvmZ5RYbNnKYFOCMcbWaASrB5MGp5Pkd8HYjADivEZ+N1mIF34D5UZdzsz+IWtA7w8nUXz8y6ayYUIeDQQAPdoAYr53WWo1jFyTSC+ThV7NNDqZMH1hsMDjTwIfAByDJEMWvA0EXdIp4W/f9RXnAwfdD5ZhAyXsvIFmhgMBs+EQPpUNzAkUqQSYGzB9BGLOOymHQr2DCX2Zy4IjgYkYfhYEoxlL3aRIY9ASUEBI4WWBOrMZyRGH5UXuD6DxC6EU0Q4DEIvHFxRWawFRE5UigCbOcjzX8HY+x6XtN4qHtQAAAAASUVORK5CYII=';
-
-    const shadowUrl = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACIAAAAyCAYAAABGpIrGAAAACXBIWXMAAAsTAAALEwEAmpwYAAABv0lEQVR4nO2YPUvDQBCF7xJCQIDdQAcqAIcAOYACkgBFoAA6AAKoABagAaoAAagALUoEOQnWLS7E4Zm9cuvKkP3Z33z+zK+ZMbgIgp+BrgHEQF0OPFt/kxkkcxgbM+YVAp+lCeAQpgHkAnS1kx7p2yxFlEjRt8ZZOp+lDtvXB/E9S3R3fBBKInbcqKlxR4TA9BDAsOq8Py6kLMYI9E4UrCOp+0Umk9GgjGrZAnU6m0OE7Cul7tAGbADCGIHoKn1EG3hFMiZpLM9JP7Z3eg6ZT6fQZrPZRIpFVh4zM06E4HsBsSIk5YUSAzxvvoPb1A43xzXu4UKKQ0nIf63aIXe6cL4Vu1A2hXvZ1RCPgQEV7mDFXyMjD/FczMl8VkuDcrntYolWEzEVc9zOfS6RaIgT6Hg5rFbcH0er1er/f7zU77Fdn1+i1+u9+t9vt9vstXrdLxWLT2zzwJmlD+VSB6EeK9m4AAAAAElFTkSuQmCC';
-
+    // 使用本地圖示
     L.Icon.Default.mergeOptions({
-      iconUrl: iconUrl,
-      iconRetinaUrl: iconUrl,
-      shadowUrl: shadowUrl
+      iconUrl: 'images/marker-icon.png',
+      iconRetinaUrl: 'images/marker-icon-2x.png',
+      shadowUrl: 'images/marker-shadow.png'
     });
 
     // 初始化地圖
