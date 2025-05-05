@@ -1,5 +1,7 @@
 [
   {
+    "continent": "歐洲",
+    "country": "荷蘭",
     "school": "Delft University of Technology (TU Delft)",
     "lat": 52.002,
     "lon": 4.373,
@@ -15,6 +17,8 @@
     ]
   },
   {
+    "continent": "北美洲",
+    "country": "美國",
     "school": "Purdue University",
     "lat": 40.412,
     "lon": -86.937,
