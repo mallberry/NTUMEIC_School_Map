@@ -115,7 +115,7 @@
         <h3>📍地點瀏覽</h3>
         <div id="menu"></div>
         <hr>
-        <h3>分享會文章</h3>
+        <h3>活動文章</h3>
         <ul id="events"></ul>
     </div>
     <div id="map"></div>
@@ -200,13 +200,25 @@
             .then(response => response.json())
             .then(data => {
                 const eventsList = document.getElementById('events');
-                data.forEach(article => {
-                    const listItem = document.createElement('li');
-                    listItem.innerHTML = `<a href="${article.url}" target="_blank">${article.title}</a>`;
-                    eventsList.appendChild(listItem);
-                });
+                for (const category in data) {
+                    const categoryElement = document.createElement('details');
+                    const summary = document.createElement('summary');
+                    summary.textContent = category;
+                    categoryElement.appendChild(summary);
+    
+                    const list = document.createElement('ul');
+                    data[category].forEach(article => {
+                        const listItem = document.createElement('li');
+                        listItem.innerHTML = `<a href="${article.url}" target="_blank">${article.title}</a>`;
+                        list.appendChild(listItem);
+                    });
+
+                    categoryElement.appendChild(list);
+                    eventsList.appendChild(categoryElement);
+                }
             })
             .catch(error => console.error('Error loading events data:', error));
+
 
     </script>
 </body>
