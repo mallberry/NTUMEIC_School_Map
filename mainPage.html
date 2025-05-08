@@ -15,7 +15,7 @@
         #map {
             position: absolute;
             top: 0;
-            left: 300px; /* 預留 sidebar 寬度 */
+            left: 300px;
             right: 0;
             bottom: 0;
             z-index: 0;
@@ -51,14 +51,16 @@
             margin-left: 2em;
         }
 
-        /* ✅ 加上縮排 */
-        #menu > details > summary {
+        #menu > details > summary,
+        #events > details > summary {
             padding-left: 0.5em;
         }
-        #menu > details > details > summary {
+        #menu > details > details > summary,
+        #events > details > details > summary {
             padding-left: 1.5em;
         }
-        #menu > details > details > details > summary {
+        #menu > details > details > details > summary,
+        #events > details > details > details > summary {
             padding-left: 2.5em;
         }
 
@@ -67,22 +69,27 @@
             font-weight: bold;
             padding: 2px 0;
         }
+
         ul {
             padding-left: 1em;
             list-style-type: disc;
             margin-top: 5px;
             margin-bottom: 5px;
         }
+
         li {
             margin-bottom: 3px;
         }
+
         a {
             color: #0077cc;
             text-decoration: none;
         }
+
         a:hover {
             text-decoration: underline;
         }
+
         hr {
             border: 0;
             height: 1px;
@@ -97,7 +104,7 @@
         <div id="menu"></div>
         <hr>
         <h3>活動文章</h3>
-        <ul id="events"></ul>
+        <div id="events"></div>
     </div>
     <div id="map"></div>
 
@@ -161,8 +168,10 @@
 
                             countryElement.appendChild(schoolElement);
                         }
+
                         continentElement.appendChild(countryElement);
                     }
+
                     menu.appendChild(continentElement);
                 }
             })
@@ -171,22 +180,23 @@
         fetch('events.json')
             .then(response => response.json())
             .then(data => {
-                const eventsList = document.getElementById('events');
-                for (const category in data) {
-                    const categoryElement = document.createElement('details');
-                    const summary = document.createElement('summary');
-                    summary.textContent = category;
-                    categoryElement.appendChild(summary);
+                const eventsDiv = document.getElementById('events');
 
-                    const list = document.createElement('ul');
+                for (const category in data) {
+                    const categoryDetails = document.createElement('details');
+                    const categorySummary = document.createElement('summary');
+                    categorySummary.textContent = category;
+                    categoryDetails.appendChild(categorySummary);
+
+                    const articleList = document.createElement('ul');
                     data[category].forEach(article => {
                         const listItem = document.createElement('li');
                         listItem.innerHTML = `<a href="${article.url}" target="_blank">${article.title}</a>`;
-                        list.appendChild(listItem);
+                        articleList.appendChild(listItem);
                     });
 
-                    categoryElement.appendChild(list);
-                    eventsList.appendChild(categoryElement);
+                    categoryDetails.appendChild(articleList);
+                    eventsDiv.appendChild(categoryDetails);
                 }
             })
             .catch(error => console.error('Error loading events data:', error));
