@@ -15,7 +15,7 @@
         #map {
             position: absolute;
             top: 0;
-            left: 300px; /* Sidebar width */
+            left: 300px; /* 預留 sidebar 寬度 */
             right: 0;
             bottom: 0;
             z-index: 0;
@@ -33,11 +33,13 @@
             box-shadow: 2px 0 5px rgba(0,0,0,0.1);
             box-sizing: border-box;
         }
+
         h3 {
             margin-top: 0.5em;
             margin-bottom: 0.5em;
             padding-left: 5px;
         }
+
         details {
             margin-left: 0;
             margin-bottom: 5px;
@@ -48,6 +50,18 @@
         details details details {
             margin-left: 2em;
         }
+
+        /* ✅ 加上縮排 */
+        #menu > details > summary {
+            padding-left: 0.5em;
+        }
+        #menu > details > details > summary {
+            padding-left: 1.5em;
+        }
+        #menu > details > details > details > summary {
+            padding-left: 2.5em;
+        }
+
         summary {
             cursor: pointer;
             font-weight: bold;
@@ -163,7 +177,7 @@
                     const summary = document.createElement('summary');
                     summary.textContent = category;
                     categoryElement.appendChild(summary);
-    
+
                     const list = document.createElement('ul');
                     data[category].forEach(article => {
                         const listItem = document.createElement('li');
