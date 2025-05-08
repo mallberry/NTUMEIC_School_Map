@@ -15,16 +15,15 @@
         #map {
             position: absolute;
             top: 0;
-            left: 0; /* Initially covers the whole width */
+            left: 300px; /* Sidebar width */
             right: 0;
             bottom: 0;
             z-index: 0;
-            transition: left 0.3s ease-in-out; /* Smooth transition for map movement */
         }
         #sidebar {
-            position: fixed; /* Fixed to the viewport */
+            position: fixed;
             top: 0;
-            left: -300px; /* Initially hidden to the left */
+            left: 0;
             width: 300px;
             height: 100%;
             background: rgba(255, 255, 255, 0.95);
@@ -32,39 +31,12 @@
             padding: 10px;
             z-index: 1000;
             box-shadow: 2px 0 5px rgba(0,0,0,0.1);
-            box-sizing: border-box; /* Include padding in width */
-            transition: left 0.3s ease-in-out; /* Smooth transition for sidebar */
-        }
-        #sidebar.open {
-            left: 0; /* Slide in when open class is added */
-        }
-        .menu-toggle {
-            position: fixed;
-            top: 15px;
-            left: 15px;
-            z-index: 1001;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            width: 30px;
-            height: 22px;
-            cursor: pointer;
-            padding: 5px;
-            background-color: rgba(255, 255, 255, 0.8);
-            border-radius: 5px;
-            box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
-        }
-        .menu-toggle span {
-            display: block;
-            height: 3px;
-            width: 100%;
-            background-color: #333;
-            border-radius: 3px;
+            box-sizing: border-box;
         }
         h3 {
             margin-top: 0.5em;
-            margin-bottom: 0.5em; /* Added for spacing */
-            padding-left: 5px; /* Align with details */
+            margin-bottom: 0.5em;
+            padding-left: 5px;
         }
         details {
             margin-left: 0;
@@ -79,16 +51,16 @@
         summary {
             cursor: pointer;
             font-weight: bold;
-            padding: 2px 0; /* Added for better click area */
+            padding: 2px 0;
         }
         ul {
             padding-left: 1em;
-            list-style-type: disc; /* Ensure bullets are visible */
-            margin-top: 5px; /* Space between summary and list */
+            list-style-type: disc;
+            margin-top: 5px;
             margin-bottom: 5px;
         }
         li {
-            margin-bottom: 3px; /* Space between list items */
+            margin-bottom: 3px;
         }
         a {
             color: #0077cc;
@@ -106,11 +78,6 @@
     </style>
 </head>
 <body>
-    <div class="menu-toggle">
-        <span></span>
-        <span></span>
-        <span></span>
-    </div>
     <div id="sidebar">
         <h3>訪談文章</h3>
         <div id="menu"></div>
@@ -132,15 +99,6 @@
             attribution: '地圖資料 © <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> 貢獻者',
             maxZoom: 18,
         }).addTo(map);
-
-        const sidebar = document.getElementById('sidebar');
-        const mapElement = document.getElementById('map');
-        const menuToggle = document.querySelector('.menu-toggle');
-
-        menuToggle.addEventListener('click', () => {
-            sidebar.classList.toggle('open');
-            mapElement.classList.toggle('open-sidebar'); // Optional: Adjust map position
-        });
 
         fetch('data.json')
             .then(response => response.json())
@@ -218,8 +176,6 @@
                 }
             })
             .catch(error => console.error('Error loading events data:', error));
-
-
     </script>
 </body>
 </html>
