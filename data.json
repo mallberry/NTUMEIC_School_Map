@@ -6,8 +6,12 @@
         "lon": 4.373,
         "articles": [
           {
-            "title": "B05級 顏秉鈞學長 - MSc Aerospace Engineering",
+            "title": "B05級 顏秉鈞學長 - MSc of Aerospace Engineering",
             "url": "https://medium.com/@ntumeinternationalcompass/b05%E7%B4%9A-%E9%A1%8F%E7%A7%89%E5%9D%87-delft-university-of-technology-msc-aerospace-engineering-f6b341130057"
+          },
+          {
+            "title": "B04級 陳思彤學姐 - MSc of Aerospace Engineering",
+            "url": "https://medium.com/@ntumeinternationalcompass/b04%E7%B4%9A-%E9%99%B3%E6%80%9D%E5%BD%A4-tu-delft-msc-of-aerospace-engineering-track-control-operation-78bfe0062880"
           }
         ]
       }
@@ -140,6 +144,10 @@
           {
             "title": "B06級 于紹尹學姐 - Mechanical Engineering Ph.D.",
             "url": "https://medium.com/@ntumeinternationalcompass/b06%E7%B4%9A-%E4%BA%8E%E7%B4%B9%E5%B0%B9-uc-berkeley-mechanical-engineering-ph-d-fbca0a034a67"
+          },
+          {
+            "title": "B09級 葉俊臺學長 - Mechanical Engineering M.Eng.",
+            "url": "https://medium.com/@ntumeinternationalcompass/b09-%E7%B4%9A-%E8%91%89%E5%B3%BB%E8%87%BA-university-of-california-berkeley-uc-berkeley-m-eng-in-mechanical-engineering-c753c8d5deac"
           }
         ]
       },
@@ -214,6 +222,17 @@
             "url": "https://medium.com/@ntumeinternationalcompass/b09%E7%B4%9A-%E5%BC%B5%E6%99%89%E7%91%88-university-of-michigan-mechancial-engineering-mse-eec8f4dd6483"
           }
         ]
+      },
+      {
+      "Georgia Tech (GaTech)": {
+        "lat": 33.75,
+        "lon": -84.39,
+        "articles": [
+          {
+            "title": "B05級 許定為學長 - Electrical and Computer Engineering Ph.D.", 
+            "url": "https://medium.com/@ntumeinternationalcompass/b05%E7%B4%9A-%E8%A8%B1%E5%AE%9A%E7%82%BA-gatech-ece-ph-d-071c0bbf51d5"
+          }
+        ]
       }
     },
     "加拿大": {
@@ -230,5 +249,6 @@
     }
   }
 }
+
 
 
