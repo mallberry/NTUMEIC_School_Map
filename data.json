@@ -192,6 +192,16 @@
             "url": "https://medium.com/@ntumeinternationalcompass/b08%E7%B4%9A-%E6%9E%97%E6%98%B1%E7%91%8B-stanford-university-mechanical-engineering-fbdb91bd13ce"
           }
         ]
+      },
+      "University of Michigan": {
+        "lat": 42.2795,
+        "lon": -83.7371,
+        "articles": [
+          {
+            "title": "B05級 李冠廷學長 - Robotics MS",
+            "url": "https://medium.com/@ntumeinternationalcompass/b05%E7%B4%9A-%E6%9D%8E%E5%86%A0%E5%BB%B7-university-of-michigan-robotics-ms-7f5590c744fb",
+          }
+        ]
       }
     },
     "加拿大": {
@@ -208,3 +218,4 @@
     }
   }
 }
+
