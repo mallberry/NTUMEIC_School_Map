@@ -215,7 +215,7 @@
         "articles": [
           {
             "title": "B05級 李冠廷學長 - Robotics MS",
-            "url": "https://medium.com/@ntumeinternationalcompass/b05%E7%B4%9A-%E6%9D%8E%E5%86%A0%E5%BB%B7-university-of-michigan-robotics-ms-7f5590c744fb",
+            "url": "https://medium.com/@ntumeinternationalcompass/b05%E7%B4%9A-%E6%9D%8E%E5%86%A0%E5%BB%B7-university-of-michigan-robotics-ms-7f5590c744fb"
           },
           {
             "title": "B09級 張晉瑈學姐 - Mechanical Engineering MSE",
@@ -223,7 +223,6 @@
           }
         ]
       },
-      {
       "Georgia Tech (GaTech)": {
         "lat": 33.75,
         "lon": -84.39,
@@ -249,6 +248,7 @@
     }
   }
 }
+
 
 
 
